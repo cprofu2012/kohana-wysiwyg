@@ -10,7 +10,7 @@ class Controller_WYSIWYG extends Controller {
 		// Remove the extension from the filename
 		$file = substr($file, 0, - (strlen($ext) + 1));
 
-		if ($file = Kohana::find_file('vendor', 'wysiwyg/'.$file, $ext))
+		if ($file = Kohana::find_file('vendor', $file, $ext))
 		{
 			// Check if the browser sent an "if-none-match: <etag>" header, and tell if the file hasn't changed
 			$this->response->check_cache(sha1($this->request->uri()).filemtime($file), $this->request);
@@ -29,24 +29,47 @@ class Controller_WYSIWYG extends Controller {
 		}
 	}
 
-	public function action_instance($file)
+	public function action_js($file)
 	{
-		// Find the file extension
-		$ext = pathinfo($file, PATHINFO_EXTENSION);
+		$files = array
+		(
+			Kohana::find_file('vendor/tiny_mce', 'jquery.tinymce', 'js'),
+			Kohana::find_file('vendor/codemirror/lib', 'codemirror', 'js'),
+			Kohana::find_file('vendor/codemirror/lib', 'overlay', 'js'),
+			Kohana::find_file('media/wysiwyg', 'initEditors', 'js'),
+		);
 
-		// Remove the extension from the filename
-		$instance = substr($file, 0, - (strlen($ext) + 1));
+		$optional_content = array
+		(
+			'textAreaClass' => 'rte',
+			'lang'          => array(__('Rich text'), __('Source code'))
+		);
 
-		$config = Kohana::config('wysiwyg');
+		$this->_content($files, 'js', 'editor='.json_encode($optional_content).';');
+	}
 
-		if ( ! isset($config[$instance]))
+	public function action_css($file)
+	{
+		$files = array
+		(
+			Kohana::find_file('media/wysiwyg', 'wysiwyg', 'css'),
+			Kohana::find_file('vendor/codemirror/lib', 'codemirror', 'css'),
+		);
+
+		$this->_content($files, 'css');
+	}
+
+	protected function _content(array $files, $extension, $optional_content = NULL)
+	{
+		$content = '';
+
+		foreach ($files as $file)
 		{
-			// Return a 404 status
-			return $this->response->status(404);
+			$content .= file_get_contents($file);
 		}
 
-		$this->response->headers('content-type',  File::mime_by_ext($ext));
-		$this->response->body(TinyMCE::instance($instance));
+		$this->response->body($optional_content.$content);
+		$this->response->headers('content-type',  File::mime_by_ext($extension));
 	}
 
 } // End Controller_TinyMCE
