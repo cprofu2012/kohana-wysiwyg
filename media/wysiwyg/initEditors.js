@@ -21,7 +21,7 @@ $().ready(function(){
                 else tab.attr("href", "#");
             }
             tArea.tinymce({
-                script_url : 'wysiwyg/static/tiny_mce/tiny_mce.js',
+                script_url : '/wysiwyg/static/tiny_mce/tiny_mce.js',
                 theme : "advanced",
                 skin : "o2k7",
                 plugins : "inlinepopups,autolink,lists,pagebreak,style,table,advhr,advimage,advlink,inlinepopups,media,contextmenu,visualchars,nonbreaking,xhtmlxtras,advlist",
