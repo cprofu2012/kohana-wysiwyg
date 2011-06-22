@@ -1,3 +1,4 @@
+(function($) {
 $().ready(function(){
     $("textarea"+(editor.textAreaClass != "")?"."+editor.textAreaClass :"").each(function(){
         var tArea = $(this), tab;
@@ -70,3 +71,5 @@ $.fn.createCM = function() {
     editor.focus();
     $.data(this.get(0),"mode","code");
 }
+
+}(jQuery));
