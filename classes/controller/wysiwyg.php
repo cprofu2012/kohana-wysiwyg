@@ -36,6 +36,7 @@ class Controller_WYSIWYG extends Controller {
 			Kohana::find_file('vendor/tiny_mce', 'jquery.tinymce', 'js'),
 			Kohana::find_file('vendor/codemirror/lib', 'codemirror', 'js'),
 			Kohana::find_file('vendor/codemirror/lib', 'overlay', 'js'),
+			Kohana::find_file('vendor/codemirror/mode/xml', 'xml', 'js'),
 			Kohana::find_file('media/wysiwyg', 'initEditors', 'js'),
 		);
 
@@ -54,6 +55,7 @@ class Controller_WYSIWYG extends Controller {
 		(
 			Kohana::find_file('media/wysiwyg', 'wysiwyg', 'css'),
 			Kohana::find_file('vendor/codemirror/lib', 'codemirror', 'css'),
+			Kohana::find_file('vendor/codemirror/mode/xml', 'xml', 'css')
 		);
 
 		$this->_content($files, 'css');
